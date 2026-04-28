@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar class="app-toolbar">
+    <ion-title class="app-toolbar__title">Task lists</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="app-page">
+  <div class="app-page__inner page-bg todo-lists-page">
+    <header class="todo-lists-hero">
+      <p class="todo-lists-kicker">Organize</p>
+      <h1 class="todo-lists-heading">Your lists</h1>
+      <p class="todo-lists-lead">
+        Create a named list, open it, then add tasks and mark them done as you go.
+      </p>
+      <button type="button" class="app-btn app-btn--primary todo-lists-new" (click)="addList()">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        New list
+      </button>
+    </header>
+
+    @if (listCards().length === 0) {
+      <div class="app-card todo-lists-empty">
+        <i class="fa-solid fa-layer-group todo-lists-empty__icon" aria-hidden="true"></i>
+        <p class="todo-lists-empty__title">No lists yet</p>
+        <p class="app-muted">Tap “New list” to create your first list.</p>
+      </div>
+    } @else {
+      <ul class="todo-lists-grid">
+        @for (card of listCards(); track card.id; let i = $index) {
+          <li>
+            <a [routerLink]="['/tabs/todos', card.id]" class="todo-list-card" [ngClass]="cardToneClass(i)">
+              <div class="todo-list-card__top">
+                <span class="todo-list-card__name">{{ card.name }}</span>
+                <i class="fa-solid fa-chevron-right todo-list-card__chev" aria-hidden="true"></i>
+              </div>
+              <div class="todo-list-card__stats">
+                <span class="todo-list-card__pill todo-list-card__pill--open">{{ card.open }} open</span>
+                <span class="todo-list-card__pill todo-list-card__pill--done">{{ card.done }} done</span>
+              </div>
+              @if (card.total === 0) {
+                <p class="todo-list-card__hint">Open to add tasks</p>
+              }
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</ion-content>

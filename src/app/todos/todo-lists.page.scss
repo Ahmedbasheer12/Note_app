@@ -1,0 +1,202 @@
+.page-bg {
+  background:
+    radial-gradient(720px 480px at 0% 0%, color-mix(in oklab, var(--accent-secondary) 12%, transparent), transparent 55%),
+    radial-gradient(640px 400px at 100% 20%, color-mix(in oklab, var(--accent-tertiary) 10%, transparent), transparent 50%),
+    var(--app-bg);
+}
+
+.todo-lists-page {
+  padding-bottom: calc(var(--app-tab-h) + var(--app-tab-safe-bottom) + var(--app-space-4));
+}
+
+.todo-lists-hero {
+  margin-bottom: var(--app-space-3);
+}
+
+.todo-lists-kicker {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.todo-lists-heading {
+  margin: var(--app-space-1) 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
+
+.todo-lists-lead {
+  margin: var(--app-space-1) 0 var(--app-space-2);
+  max-width: 36rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-sub);
+}
+
+.todo-lists-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todo-lists-empty {
+  text-align: center;
+  padding: var(--app-space-4);
+}
+
+.todo-lists-empty__icon {
+  font-size: 2rem;
+  color: var(--accent-primary);
+  margin-bottom: var(--app-space-2);
+  opacity: 0.85;
+}
+
+.todo-lists-empty__title {
+  margin: 0 0 var(--app-space-1);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.todo-lists-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--app-space-2);
+}
+
+@media (min-width: 520px) {
+  .todo-lists-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.todo-list-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: var(--app-space-2);
+  border-radius: var(--border-radius-bento);
+  border: 1px solid var(--border-subtle);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.todo-list-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  pointer-events: none;
+  background: var(--list-card-tint, transparent);
+}
+
+.todo-list-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.todo-list-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent-primary) 28%, var(--border-subtle));
+  box-shadow: var(--shadow-card-hover);
+}
+
+.todo-list-card--tone-0 {
+  --list-card-tint: radial-gradient(
+    120% 80% at 100% 0%,
+    color-mix(in oklab, var(--accent-primary) 16%, transparent),
+    transparent
+  );
+}
+
+.todo-list-card--tone-1 {
+  --list-card-tint: radial-gradient(
+    120% 80% at 100% 0%,
+    color-mix(in oklab, var(--accent-secondary) 18%, transparent),
+    transparent
+  );
+}
+
+.todo-list-card--tone-2 {
+  --list-card-tint: radial-gradient(
+    120% 80% at 100% 0%,
+    color-mix(in oklab, var(--accent-tertiary) 14%, transparent),
+    transparent
+  );
+}
+
+.todo-list-card--tone-3 {
+  --list-card-tint: radial-gradient(
+    120% 80% at 0% 100%,
+    color-mix(in oklab, var(--accent-primary) 10%, transparent),
+    color-mix(in oklab, var(--accent-secondary) 10%, transparent)
+  );
+}
+
+.todo-list-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--app-space-1);
+}
+
+.todo-list-card__name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.todo-list-card__chev {
+  flex: none;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  opacity: 0.7;
+}
+
+.todo-list-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--app-space-2);
+}
+
+.todo-list-card__pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-sub);
+}
+
+.todo-list-card__pill--open {
+  border-color: color-mix(in oklab, var(--accent-primary) 35%, var(--border-subtle));
+  color: color-mix(in oklab, var(--accent-primary) 90%, var(--text-main));
+}
+
+.todo-list-card__pill--done {
+  border-color: color-mix(in oklab, var(--accent-secondary) 30%, var(--border-subtle));
+  color: color-mix(in oklab, var(--accent-secondary) 85%, var(--text-main));
+}
+
+.todo-list-card__hint {
+  margin: var(--app-space-1) 0 0;
+  font-size: 0.8rem;
+  color: var(--text-sub);
+}

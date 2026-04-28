@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar class="app-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/notes" text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="app-toolbar__title">{{ isNew() ? 'New note' : 'Edit note' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="editor-save" (click)="save()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="app-page">
+  <div class="app-page__inner page-bg editor-form">
+    <label class="editor-label" for="note-title">Title</label>
+    <input id="note-title" class="app-input" [(ngModel)]="title" autocomplete="off" />
+
+    <label class="editor-label" for="note-cat">Category</label>
+    <input id="note-cat" class="app-input" [(ngModel)]="category" autocomplete="off" />
+
+    <label class="editor-check">
+      <input type="checkbox" [(ngModel)]="pinned" />
+      <span>Pin note</span>
+    </label>
+
+    <label class="editor-label" for="note-body">Body</label>
+    <textarea id="note-body" class="app-input app-textarea editor-body" [(ngModel)]="body" rows="12"></textarea>
+  </div>
+</ion-content>

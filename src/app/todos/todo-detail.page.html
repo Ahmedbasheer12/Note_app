@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar class="app-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/todos" text="Lists"></ion-back-button>
+    </ion-buttons>
+    @if (currentList(); as list) {
+      <ion-title class="app-toolbar__title app-toolbar__title--clip">{{ list.name }}</ion-title>
+      <ion-buttons slot="end">
+        <button type="button" class="app-btn-ghost todo-detail-head-btn" (click)="renameList(list)" aria-label="Rename list">
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="app-btn-ghost todo-detail-head-btn todo-detail-head-btn--danger"
+          (click)="deleteList(list)"
+          aria-label="Delete list"
+        >
+          <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+        </button>
+      </ion-buttons>
+    } @else {
+      <ion-title class="app-toolbar__title">Tasks</ion-title>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="app-page">
+  <div class="app-page__inner page-bg todo-detail-page">
+    @if (currentList(); as list) {
+      <div class="todo-detail-progress" role="status" [attr.aria-label]="'Progress: ' + progress().pct + ' percent'">
+        <div class="todo-detail-progress__row">
+          <span class="todo-detail-progress__label">Progress</span>
+          <span class="todo-detail-progress__value">{{ progress().done }} / {{ progress().total }}</span>
+        </div>
+        <div class="todo-detail-progress__track">
+          <div class="todo-detail-progress__fill" [style.width.%]="progress().pct"></div>
+        </div>
+      </div>
+
+      <form class="todos-add-row" (submit)="$event.preventDefault(); addTodo()">
+        <input
+          class="app-input todos-add-input"
+          [(ngModel)]="newTodoTitle"
+          name="newTodo"
+          placeholder="Add a task…"
+          autocomplete="off"
+        />
+        <button type="submit" class="app-btn app-btn--primary todos-add-btn" aria-label="Add task">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+      </form>
+
+      @if (visibleTodos().length === 0) {
+        <div class="app-card todos-empty">
+          <i class="fa-solid fa-clipboard-check todos-empty__icon" aria-hidden="true"></i>
+          <p class="todos-empty__title">No tasks yet</p>
+          <p class="app-muted">Type above and tap + to add your first task.</p>
+        </div>
+      } @else {
+        <ul class="todos-ul">
+          @for (todo of visibleTodos(); track todo.id) {
+            <li class="todos-li">
+              <button
+                type="button"
+                class="todos-check"
+                [class.todos-check--done]="todo.done"
+                (click)="toggle(todo)"
+                [attr.aria-label]="todo.done ? 'Mark as not done' : 'Mark as done'"
+              >
+                @if (todo.done) {
+                  <i class="fa-solid fa-check" aria-hidden="true"></i>
+                }
+              </button>
+
+              @if (editingId() === todo.id) {
+                <div class="todos-edit">
+                  <input class="app-input todos-edit-input" [(ngModel)]="editDraft" name="ed{{ todo.id }}" />
+                  <button type="button" class="app-btn app-btn--primary" (click)="saveEdit(todo.id)">Save</button>
+                  <button type="button" class="app-btn" (click)="cancelEdit()">Cancel</button>
+                </div>
+              } @else {
+                <span class="todos-title" [class.todos-title--done]="todo.done">{{ todo.title }}</span>
+                <div class="todos-actions">
+                  <button type="button" class="app-btn-ghost" (click)="startEdit(todo)" aria-label="Edit task">
+                    <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="app-btn-ghost todos-trash" (click)="removeTodo(todo.id)" aria-label="Delete task">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                  </button>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</ion-content>

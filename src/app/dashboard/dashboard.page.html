@@ -1,0 +1,162 @@
+<ion-content [fullscreen]="true" class="dashboard-ion-content">
+  <div class="page-bg">
+    @if (vm(); as state) {
+      @if (!state.ready) {
+        <div class="dash-shell dash-skeleton-wrap">
+          <div class="glass-panel dash-skeleton-bar"></div>
+          <div class="bento-grid">
+            <div class="glass-panel dash-skeleton-block dash-skeleton-block--wide"></div>
+            <div class="glass-panel dash-skeleton-block dash-skeleton-block--narrow"></div>
+          </div>
+        </div>
+      } @else {
+        <div class="dash-shell">
+          <header class="glass-panel bento-animate dash-header">
+            <div class="dash-header__lead">
+              <div class="dash-header__icon accent-ring">
+                <i class="fa-solid fa-table-cells-large" aria-hidden="true"></i>
+              </div>
+              <div class="dash-header__text">
+                <p class="dash-kicker">Notes &amp; Todo</p>
+                <h1 class="dash-title">Dashboard</h1>
+                <p class="dash-subtitle">
+                  A bento overview of momentum: what’s open, what’s recent, and the next moves — with glass, depth, and
+                  motion that stays out of your way.
+                </p>
+                <div class="dash-quick-nav">
+                  <a routerLink="/tabs/notes" class="dash-pill dash-pill--link">
+                    <i class="fa-solid fa-note-sticky fa-sm" aria-hidden="true"></i>
+                    <span>Notes</span>
+                  </a>
+                  <a routerLink="/tabs/todos" class="dash-pill dash-pill--link">
+                    <i class="fa-solid fa-list-check fa-sm" aria-hidden="true"></i>
+                    <span>Tasks</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-header__actions">
+              <div class="dash-pill">
+                <i class="fa-solid fa-sparkles fa-sm" aria-hidden="true"></i>
+                <span>2026 tech-aesthetic</span>
+              </div>
+
+              <button
+                type="button"
+                class="theme-toggle"
+                (click)="onToggleTheme()"
+                [attr.aria-label]="state.themeMode === 'dark' ? 'Activate light mode' : 'Activate dark mode'"
+              >
+                @if (state.themeMode === 'dark') {
+                  <i class="fa-solid fa-sun" aria-hidden="true"></i>
+                  <span>Light</span>
+                } @else {
+                  <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                  <span>Dark</span>
+                }
+              </button>
+            </div>
+          </header>
+
+          @if (summary(); as s) {
+            <section class="bento-grid dash-section">
+              <div class="glass-panel bento-animate dash-card dash-card--stats">
+                <div class="dash-card__head">
+                  <div class="dash-card__title">
+                    <i class="fa-solid fa-list-check dash-icon-accent-2" aria-hidden="true"></i>
+                    Todos
+                  </div>
+                  <span class="dash-badge">{{ s.pending }} pending</span>
+                </div>
+
+                <div class="dash-stat-grid">
+                  <div class="dash-stat">
+                    <p class="dash-stat__label">Open</p>
+                    <p class="dash-stat__value">{{ s.pending }}</p>
+                  </div>
+                  <div class="dash-stat">
+                    <p class="dash-stat__label">Done</p>
+                    <p class="dash-stat__value dash-stat__value--mint">{{ s.done }}</p>
+                  </div>
+                </div>
+
+                <p class="dash-muted-small dash-stat-foot">
+                  Total tracked: <span class="dash-stat-foot__n">{{ s.total }}</span>
+                </p>
+              </div>
+
+              <div class="glass-panel bento-animate dash-card dash-card--todos">
+                <div class="dash-card__head">
+                  <div class="dash-card__title">
+                    <i class="fa-solid fa-circle-check dash-icon-accent" aria-hidden="true"></i>
+                    Next up
+                  </div>
+                  <span class="dash-hint">Tap to complete</span>
+                </div>
+
+                <div class="todo-grid">
+                  @for (todo of s.nextUp; track todo.id; let idx = $index) {
+                    <button
+                      type="button"
+                      class="todo-tile"
+                      [ngClass]="bentoTodoClass(todo, idx)"
+                      (click)="onToggleTodo(todo.id, $event)"
+                    >
+                      <span class="todo-check" [class.todo-check--done]="todo.done" aria-hidden="true"></span>
+                      <div class="todo-tile__body">
+                        <p class="todo-tile__title">{{ todo.title }}</p>
+                        <p class="todo-tile__meta">
+                          <span class="priority-pill" [attr.data-priority]="todo.priority">{{ todo.priority }}</span>
+                          <span class="todo-tile__dot">·</span>
+                          <span class="todo-tile__status">{{ todo.done ? 'Completed' : 'Pending' }}</span>
+                        </p>
+                      </div>
+                    </button>
+                  } @empty {
+                    <div class="dash-empty-todos">You’re all caught up. Nice.</div>
+                  }
+                </div>
+              </div>
+
+              <div class="dash-notes-block">
+                <div class="dash-notes-head">
+                  <div>
+                    <p class="dash-kicker">Notes</p>
+                    <h2 class="dash-notes-title">Recent captures</h2>
+                  </div>
+                  <div class="dash-notes-hint">
+                    <i class="fa-solid fa-note-sticky fa-sm" aria-hidden="true"></i>
+                    <span>Sized by importance &amp; length</span>
+                  </div>
+                </div>
+
+                <div class="notes-bento">
+                  @for (note of recentNotes(); track note.id) {
+                    <article
+                      class="glass-panel note-card bento-animate note-card--link"
+                      [ngClass]="bentoNoteClass(note)"
+                      [routerLink]="['/tabs/notes', note.id]"
+                    >
+                      <div class="note-card__top">
+                        <div class="note-card__labels">
+                          <span class="note-chip">{{ note.category }}</span>
+                          @if (note.pinned) {
+                            <span class="note-chip note-chip--pinned">Pinned</span>
+                          }
+                        </div>
+                        <i class="fa-solid fa-note-sticky note-card__glyph" aria-hidden="true"></i>
+                      </div>
+                      <p class="note-card__body">{{ note.body }}</p>
+                      <p class="note-card__date">Updated {{ note.updatedAt | date: 'mediumDate' }}</p>
+                    </article>
+                  }
+                </div>
+              </div>
+            </section>
+          }
+        </div>
+      }
+    }
+  </div>
+</ion-content>

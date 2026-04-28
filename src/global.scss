@@ -1,0 +1,99 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ */
+
+@use './theme/variables' as *;
+
+/* Core CSS required for Ionic components to work properly */
+@import '@ionic/angular/css/core.css';
+
+/* Basic CSS for apps built with Ionic */
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+/**
+ * Theme: `ThemeService` + `[data-theme]` on `<html>`.
+ * Strip default Ionic chrome — bespoke shell only.
+ */
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--app-bg);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+ion-app {
+  background: var(--app-bg);
+}
+
+/*
+ * Do not zero ion-content padding globally: with [fullscreen]="true", Ionic uses
+ * --padding-top/--padding-bottom to offset the header & safe areas (see ion-content docs).
+ */
+ion-content {
+  --background: var(--app-bg);
+  --color: var(--text-main);
+  --keyboard-offset: 0;
+}
+
+ion-content.dashboard-ion-content {
+  --background: transparent;
+}
+
+ion-header,
+ion-header ion-toolbar {
+  box-shadow: none !important;
+  --box-shadow: none;
+}
+
+ion-header {
+  --border-width: 0;
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-width: 0;
+  --min-height: var(--app-header-h);
+}
+
+ion-title {
+  --color: var(--text-main);
+}
+
+ion-back-button {
+  --color: var(--text-sub);
+  --icon-margin-end: 4px;
+}
+
+/* Font Awesome: unified sizing when mixed with Ionic */
+ion-tab-button .fa-solid,
+ion-tab-button .fa-regular {
+  font-style: normal;
+}
+
+ion-icon {
+  font-size: 1.25rem;
+  color: var(--text-sub);
+}
+
+.tab-button-active ion-icon {
+  color: var(--accent-primary);
+}

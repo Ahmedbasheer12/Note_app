@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar class="app-toolbar">
+    <ion-title class="app-toolbar__title">Notes</ion-title>
+    <ion-buttons slot="end">
+      <a routerLink="/tabs/notes/new" class="notes-add-link" aria-label="New note">
+        <i class="fa-solid fa-plus"></i>
+      </a>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="app-page">
+  <div class="app-page__inner page-bg notes-page">
+    <div class="notes-search-wrap">
+      <i class="fa-solid fa-magnifying-glass notes-search-icon" aria-hidden="true"></i>
+      <input
+        type="search"
+        class="app-input notes-search"
+        placeholder="Search title, body, or category…"
+        [value]="query()"
+        (input)="onSearch($event)"
+      />
+    </div>
+
+    @if (filtered().length === 0) {
+      <div class="app-card notes-empty">
+        <i class="fa-regular fa-note-sticky notes-empty__icon" aria-hidden="true"></i>
+        <p class="notes-empty__title">No notes found</p>
+        <p class="app-muted">Create a note to get started.</p>
+        <a routerLink="/tabs/notes/new" class="app-btn app-btn--primary notes-empty__btn">New note</a>
+      </div>
+    } @else {
+      <ul class="notes-list">
+        @for (note of filtered(); track note.id) {
+          <li class="notes-list__item">
+            <div class="notes-card">
+              <a [routerLink]="['/tabs/notes', note.id]" class="notes-card__link">
+                <div class="notes-card__top">
+                  <span class="notes-card__cat">{{ note.category }}</span>
+                  @if (note.pinned) {
+                    <span class="notes-card__pin"><i class="fa-solid fa-thumbtack" aria-hidden="true"></i></span>
+                  }
+                </div>
+                <h2 class="notes-card__title">{{ note.title }}</h2>
+                <p class="notes-card__preview">{{ note.body }}</p>
+                <time class="notes-card__time">{{ note.updatedAt | date: 'mediumDate' }}</time>
+              </a>
+              <button
+                type="button"
+                class="notes-card__delete"
+                (click)="confirmDelete(note, $event)"
+                aria-label="Delete note"
+              >
+                <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</ion-content>
